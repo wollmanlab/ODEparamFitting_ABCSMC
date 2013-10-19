@@ -1,4 +1,4 @@
-function [K,x0,L,t0,t] = SubramaniamInput( )
+function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     % the vector of parameters
     K = zeros(79,1);
     % vector of initial conditions
@@ -209,5 +209,9 @@ function [K,x0,L,t0,t] = SubramaniamInput( )
     t0 = 1000;
     % t is the period after perturbation
     t =  2000;
+    
+    % dt is the interplocated timestep
+    dt = 1; 
+    
 end
 

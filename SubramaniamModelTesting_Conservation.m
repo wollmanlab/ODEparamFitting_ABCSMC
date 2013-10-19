@@ -21,15 +21,15 @@ clc
 %% Test #1 - Ligand conservation
 
 % create inputs
-[K,x0,L,t0,t] = SubramaniamInput; 
+[K,x0,L,t0,t,dt] = SubramaniamInput; 
 % Turn off the degradation flux of ligand
 KL = K;
 KL(44) = 0;
 % first get the zero ligand input condition
-[T0L,X0L,] = SubramaniamModel(KL,t0,x0);
+[T0L,X0L,] = SubramaniamModel(KL,t0,x0,dt);
 xL = X0L(end,:);
 xL(1) = L;
-[TL,XL] = SubramaniamModel(KL,t,xL);
+[TL,XL] = SubramaniamModel(KL,t,xL,dt);
 
 % plot 
 figure(1);
@@ -55,15 +55,15 @@ set(h,'location','best');
 % Check for conservation of receptor
 
 % create inputs
-[K,x0,L,t0,t] = SubramaniamInput; 
+[K,x0,L,t0,t,dt] = SubramaniamInput; 
 % Turn off the degradation flux of receptor
 KR = K;
 KR(46) = 0;
 
-[T0R,X0R] = SubramaniamModel(KR,t0,x0);
+[T0R,X0R] = SubramaniamModel(KR,t0,x0,dt);
 xR = X0R(end,:);
 xR(1) = L;
-[TR,XR] = SubramaniamModel(KR,t,xR);
+[TR,XR] = SubramaniamModel(KR,t,xR,dt);
 
 figure(2)
 clf
@@ -83,98 +83,107 @@ title('expected')
 
 suptitle('Tot. Receptor');
 
-%%
+%% Test conservation of Ga 
 % create inputs
-[K,x0,L,t0,t] = SubramaniamInput; 
+[K,x0,L,t0,t,dt] = SubramaniamInput; 
 % first let the species go to steady states
 % This steady state output can be used for all the subsequent 
-[T0,X0,speciesArray] = SubramaniamModel(K,t0,x0);
+[T0,X0,speciesArray] = SubramaniamModel(K,t0,x0,dt);
 % Check for conservation of G protein alpha
 x1 = X0(end,:);
 x1(1) = L;
-[T1,X1,speciesArray1] = SubramaniamModel(K,t,x1);
-subplot(2,4,3);
+[T1,X1,speciesArray1] = SubramaniamModel(K,t,x1,dt);
 % use interpolation to get time series values in speciesArray that
 % correspond to the values in the output X vector
-GiDInterp0 = interp1(speciesArray(:,1),speciesArray(:,3),T0);
-GiDInterp = interp1(speciesArray1(:,1), speciesArray1(:,3),T1);
+GiDInterp0 = speciesArray(:,2);
+GiDInterp = speciesArray1(:,2);
 % plot the conservation for G protien alpha
-subplot(2,4,3);
+
+% speciesArray = [IP3p,GiD,GRK_Gby, Cai2CaMGRK, Cai2CaM];
+
+figure(3)
+subplot(2,4,2);
 plot(T0, (X0(:,11) + X0(:,12) + GiDInterp0)./(X0(1,11) + X0(1,12) + GiDInterp0(1)) ,'b',T1 + max(T0),(X1(:,11) + X1(:,12) + GiDInterp)./(X0(1,11) + X0(1,12) + GiDInterp0(1)),'r');
 title('Tot. G alpha');
 xlabel('Time (seconds)');
 ylabel('Fraction changed');
+
+
 % Check for conservation of G protein beta gamma
-GRKGbyInterp0 = interp1(speciesArray(:,1),speciesArray(:,4),T0);
-GRKGbyInterp = interp1(speciesArray1(:,1), speciesArray1(:,4),T1);
+GRKGbyInterp0 = speciesArray(:,3);
+GRKGbyInterp = speciesArray1(:,3);
 subplot(2,4,4);
 plot(T0,(X0(:,4) + GiDInterp0 + GRKGbyInterp0)./(X0(1,4) + GiDInterp0(1) + GRKGbyInterp0(1)),'b', T1 + max(T0), (X1(:,4) + GiDInterp + GRKGbyInterp)./(X0(1,4) + GiDInterp0(1) + GRKGbyInterp0(1)),'r');
 title('Tot. G beta gamma');
 xlabel('Time (seconds)');
 ylabel('Fraction changed)');
+
 % Check for conservation of GRK
-Cai2CaMGRKInterp0 = interp1(speciesArray(:,1),speciesArray(:,5),T0);
-Cai2CaMGRKInterp  = interp1(speciesArray(:,1),speciesArray(:,5),T1);
+Cai2CaMGRKInterp0 = speciesArray(:,4);
+Cai2CaMGRKInterp  = speciesArray(:,4);
 subplot(2,4,5);
 plot(T0,(X0(:,5) + GRKGbyInterp0 + Cai2CaMGRKInterp0)./(X0(1,5) + GRKGbyInterp0(1) + Cai2CaMGRKInterp0(1)),'b', T1 + max(T0), (X1(:,5) + GRKGbyInterp + Cai2CaMGRKInterp)./(X0(1,5) + GRKGbyInterp0(1) + Cai2CaMGRKInterp0(1)), 'r');
 title('Tot. GRK');
 xlabel('Time (seconds)');
 ylabel('Fraction changed');
 % Check for conservation of CaM
-Cai2CaMInterp0 = interp1(speciesArray(:,1),speciesArray(:,6),T0); 
-Cai2CaMInterp = interp1(speciesArray(:,1),speciesArray(:,6),T1);
+Cai2CaMInterp0 = speciesArray(:,5); 
+Cai2CaMInterp = speciesArray(:,5);
+
 subplot(2,4,6);
 plot(T0, (X0(:,15) + Cai2CaMGRKInterp0 + Cai2CaMInterp0)./(X0(1,15) + Cai2CaMGRKInterp0(1) + Cai2CaMInterp0(1)),'b',T1 + max(T0), (X1(:,15) + Cai2CaMGRKInterp + Cai2CaMInterp)./(X0(1,15) + Cai2CaMGRKInterp0(1) + Cai2CaMInterp0(1)), 'r');
 title('Tot. CaM');
 xlabel('Time (seconds)');
 ylabel('Fraction changed');
 % Check for conservation of PIP2
-ip3pInterp0 = interp1( speciesArray(:,1),speciesArray(:,2),T0); 
-ip3pInterp = interp1( speciesArray(:,1),speciesArray(:,2), T1);
+ip3pInterp0 = speciesArray(:,1); 
+ip3pInterp = speciesArray(:,1);
+
 subplot(2,4,7);
 plot(T0,(X0(:,13) + ip3pInterp0 + X0(:,14))./(X0(1,13) + ip3pInterp0(1) + X0(1,14)), 'b',T1 + max(T0),(X1(:,13) + ip3pInterp + X1(:,14))./(X0(1,13) + ip3pInterp0(1) + X0(1,14)), 'r');
 title('Tot. PIP2');
 xlabel('Time (seconds)');
 ylabel('Fraction changed');
+
 % The second plot panel has three plots 
-figure(2);
+figure(5);
 % The second plot panel has plots on time profiles of species 
 % Plot on ligand
 subplot(3,3,1);
 plot(T0,X0(:,1),'b',T1 + max(T0),X1(:,1),'r');
 title('Ligand vs time');
 xlabel('Time (seconds)');
-ylabel('Concentration(micromolar)');
+ylabel('Concentration(\muM)');
 % Plot on cytosolic calcium
 subplot(3,3,2);
 plot(T0,X0(:,16),'b',T1 + max(T0),X1(:,16),'r');
 title('Cytosolic calcium vs time');
 xlabel('Time (seconds)');
-ylabel('Concentration(micromolar)');
+ylabel('Concentration(\muM)');
 % Plot on ER calcium 
 subplot(3,3,3);
 plot(T0,X0(:,17),'b',T1 + max(T0),X1(:,17),'r');
 title('ER calcium vs time');
 xlabel('Time (seconds)');
-ylabel('Concentration(micromolar)');
+ylabel('Concentration(\muM)');
 % Plot on mitochondria calcium
 subplot(3,3,4);
 plot(T0,X0(:,19),'b',T1 + max(T0),X1(:,19),'r');
 title('mitochondria calcium vs time');
 xlabel('Time (seconds)');
-ylabel('Concentration(micromolar)');
+ylabel('Concentration(\muM)');
 % Plot on IP3 
 subplot(3,3,5);
 plot(T0,X0(:,19),'b',T1 + max(T0),X1(:,19),'r');
 title('mitochondria calcium vs time');
 xlabel('Time (seconds)');
-ylabel('Concentration(micromolar)');
+ylabel('Concentration(\muM)');
 % Plot on G protein beta gamma
 subplot(3,3,6);
 plot(T0,X0(:,4),'b',T1 + max(T0),X1(:,4),'r');
 title('G protein beta gamma vs time');
 xlabel('Time (seconds)');
-ylabel('Concentration(micromolar)');
+ylabel('Concentration(\muM)');
 % The third plot panel has plots on fluxes
 
 % Plot on IP3 generation flux
