@@ -44,7 +44,7 @@ function [K,x0,L,t0,t] = SubramaniamInput( )
     %Prtot_e
     K(1) = 1.91e2;
     %Km_e
-    K(2) = 2.43
+    K(2) = 2.43;
     %Prtot_x
     K(3) = 8.77;
     %Km_x
@@ -164,7 +164,7 @@ function [K,x0,L,t0,t] = SubramaniamInput( )
     %kf20 
     K(61) = 1;
     %kf22 
-    K(62) = 1.1e-2
+    K(62) = 1.1e-2;
     %kb22 
     K(63) = 2.75e-3;
     %A 
@@ -204,7 +204,7 @@ function [K,x0,L,t0,t] = SubramaniamInput( )
     
     
     %L is the ligand amount
-    L = 0.01
+    L = 0.01;
     % t0 is the period before perturbation
     t0 = 1000;
     % t is the period after perturbation

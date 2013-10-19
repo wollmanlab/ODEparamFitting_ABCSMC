@@ -1,37 +1,27 @@
-%% MODEL Testing - con
-% INTRODUCTORY TEXT
-%%
+%% MODEL TESTING => CONSERVATION
+% This script checks the validity of the Subramaniam Model by checking the conservations of the species.
+% It checks for the conservation principlles
 
 %% Init
 clear
 close all
 clc
 
+%% Create model inputs (using the Subramniam Input function) 
+% Inputs:
+%     K = the vector of parameters
+%     x0 = initial conditions before ligand perturbation
+%     L = ligand amount for perturbation
+%     t0 = the time it takes for system to settle to steady state with zero input
+%     t = the time the system will go after t0
+% Outputs:
+%     T = vector of time points
+%     X = matrix of species concentrations
 
+%% Test #1 - Ligand conservation
 
-%% Goal of this script
-%{
-This script checks the validity of the Subramaniam Model by checking the conservations of the species.
-It checks for the conservation principlles
-
-Inputs:
-    K = the vector of parameters
-    x0 = initial conditions before ligand perturbation
-    L = ligand amount for perturbation
-    t0 = the time it takes for system to settle to steady state with zero input
-    t = the time the system will go after t0
-Outputs:
-    T = vector of time points
-    X = matrix of species concentrations
-
-%}
-
-%%
-function [] = SubramaniamModelCheck( K,x0,L,t0,t )
-% The first plot panel has plots on conservation  
-% Make subplot panel 
-figure(1);
-% Check for conservation of ligand
+% create inputs
+[K,x0,L,t0,t] = SubramaniamInput; 
 % Turn off the degradation flux of ligand
 KL = K;
 KL(44) = 0;
@@ -40,24 +30,62 @@ KL(44) = 0;
 xL = X0L(end,:);
 xL(1) = L;
 [TL,XL] = SubramaniamModel(KL,t,xL);
-subplot(2,4,1);
+
+% plot 
+figure(1);
+clf
+subplot(1,2,1)
 plot(T0L,X0L(:,1) + X0L(:,3) + X0L(:,6) + X0L(:,8),'b',TL+ max(T0L),XL(:,1) + XL(:,3) + XL(:,6) + XL(:,8),'r');
-title('Tot. Ligand');
+axis([0 3000 -0.005 0.015])
+title('Simulation results')
 xlabel('Time (seconds)');
-ylabel('Concentration(micromolar)');
+ylabel('Concentration (\muM)');
+
+subplot(1,2,2)
+plot(T0L,zeros(size(T0L)),'b--',TL+ max(T0L),L*ones(size(TL)),'r--'); 
+axis([0 3000 -0.005 0.015])
+title('Expected')
+suptitle('Tot. Ligand');
+xlabel('Time (seconds)');
+ylabel('Concentration (\muM)');
+h=legend('Before','After');
+set(h,'location','best'); 
+
+%% Test #2 - Receptor conservation
 % Check for conservation of receptor
+
+% create inputs
+[K,x0,L,t0,t] = SubramaniamInput; 
 % Turn off the degradation flux of receptor
 KR = K;
 KR(46) = 0;
+
 [T0R,X0R] = SubramaniamModel(KR,t0,x0);
 xR = X0R(end,:);
 xR(1) = L;
 [TR,XR] = SubramaniamModel(KR,t,xR);
-subplot(2,4,2);
+
+figure(2)
+clf
+subplot(1,2,1);
 plot(T0R, (X0R(:,2)+ X0R(:,3) + X0R(:,6) + X0R(:,7) + X0R(:,8) + X0R(:,9) + X0R(:,10))./(X0R(1,2)+ X0R(1,3) + X0R(1,6) + X0R(1,7) + X0R(1,8) + X0R(1,9) + X0R(1,10)),'b',TR+ max(T0R),(XR(:,2)+ XR(:,3) + XR(:,6) + XR(:,7) + XR(:,8) + XR(:,9) + XR(:,10))./(X0R(1,2)+ X0R(1,3) + X0R(1,6) + X0R(1,7) + X0R(1,8) + X0R(1,9) + X0R(1,10)),'r');
-title('Tot. Receptor');
 xlabel('Time (seconds)');
 ylabel('Fraction changed');
+axis([0 3000 0.999 1.001])
+title('simulation')
+
+subplot(1,2,2)
+plot(T0R,ones(size(T0R)),'b--',TR,ones(size(TR)),'r--')
+axis([0 3000 0.999 1.001])
+xlabel('Time (seconds)');
+ylabel('Fraction changed');
+title('expected')
+
+suptitle('Tot. Receptor');
+
+%%
+% create inputs
+[K,x0,L,t0,t] = SubramaniamInput; 
 % first let the species go to steady states
 % This steady state output can be used for all the subsequent 
 [T0,X0,speciesArray] = SubramaniamModel(K,t0,x0);
@@ -169,5 +197,5 @@ ylabel('Concentration(micromolar)');
 
 % Plot on Jmit,out
 
-end
+
 
