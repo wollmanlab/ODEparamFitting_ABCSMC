@@ -182,11 +182,12 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     %kf2 = kb2/Km_grk;
     K(70) = K(37)/K(31);
     %kb5 = kf1;
-    K(71) = K(35);
-    %kf21 = kb21/Km_cai2_cam;
+    K(71) = K(35); 
+    %kb21 
     K(72) = 72;
-    %kf21 
-    K(73) = 86;
+    %kf21 = kb21/Km_cai2_cam is another implementation;
+    %K(73) = 86;
+    K(73) = K(72)/K(33);
     %Km_pm_ip3_dep 
     K(74) = 1;
     %Vmax_pm_ip3_dep 
@@ -204,7 +205,7 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     
     
     %L is the ligand amount
-    L = 0.01;
+    L = 0.03;
     % t0 is the period before perturbation
     t0 = 1000;
     % t is the period after perturbation
