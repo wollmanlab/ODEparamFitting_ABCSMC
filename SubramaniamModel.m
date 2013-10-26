@@ -29,7 +29,7 @@ Outputs:
 
 %}
 
-function [T,X ,speciesArray] = SubramaniamModel( K,t,x0,dt)
+function [T,X ,speciesArray,fluxMatrix] = SubramaniamModel( K,t,x0,dt)
     Prtot_e = K(1);
     Km_e = K(2);
     Prtot_x = K(3);
@@ -60,9 +60,7 @@ function [T,X ,speciesArray] = SubramaniamModel( K,t,x0,dt)
     PIP2tot = K(28);
     Xpip2_gen = K(29);
     GRKtot = K(30);
-    Km_grk = K(31);
     CaMtot = K(32);
-    Km_cai2_cam = K(33);
     Vmax_pm_ip3_dep = K(34);
     kf1 = K(35);
     kb1 = K(36);
@@ -111,14 +109,14 @@ function [T,X ,speciesArray] = SubramaniamModel( K,t,x0,dt)
     Gby_tot = K(79);
     
     Tgrid = (0:dt:t)'; 
-    function [dx_dt,speciesArray] = F(t,x) %#ok<INUSL>
+    function [dx_dt,speciesArray,fluxMatrix] = F(t,x) %#ok<INUSL>
         % Calculate the related parameters
         IP3p = PIP2tot - x(14,:) - x(13,:);
         Q = Kinh.*(x(14,:) +Kip3)./(x(14,:) + d3);
         Beta_i = (1 + Prtot_e.*Km_e./(Km_e + x(16,:)).^2 + Prtot_x.*Km_x./(Km_x + x(16,:)).^2).^-1;
         Beta_er = (1 + Prtot_er.*Km_er./(Km_er + x(17,:)).^2).^-1;
         Popen = ((x(14,:)./(x(14,:) + Kip3)).*(x(16,:)./(x(16,:) + Kact)).*x(18,:)).^3;
-        GiD = Gaitot - x(11,:) -x(12); 
+        GiD = Gaitot - x(11,:) -x(12,:); 
         GRK_Gby = Gby_tot - x(4,:) - GiD;
         Cai2CaMGRK = GRKtot -x(5,:) -GRK_Gby;
         Cai2CaM = CaMtot - x(15,:) - Cai2CaMGRK;
@@ -220,7 +218,7 @@ function [T,X ,speciesArray] = SubramaniamModel( K,t,x0,dt)
         v(30,:) = kin.*x(16,:).^4./(K2.^4 + x(16,:).^4);
         %Jmit,out
         v(31,:) = (kout.*x(16,:).^2./(K3.^2 + x(16,:).^2) + km).*x(19,:);
-        %}
+       
         % Initialize the dx_dt vector that keeps track of the differentials 
         dx_dt = zeros(19,size(x,2));
         
@@ -362,7 +360,7 @@ function [T,X ,speciesArray] = SubramaniamModel( K,t,x0,dt)
         dCaerdt = (Beta_er/rho_er).*(vec*v);
         dx_dt(17,:) = dCaerdt;
         % rate of change of h 
-        dhdt = kon*(Q -(x(16)+ Q)*x(18));
+        dhdt = kon.*(Q -(x(16,:)+ Q).*x(18,:));
         dx_dt(18,:) = dhdt;
         % rate of change of Camit
         vec = zeros(1,31);
@@ -370,11 +368,14 @@ function [T,X ,speciesArray] = SubramaniamModel( K,t,x0,dt)
         vec(31) = -1;
         dCamitdt = (Beta_m/rho_m)*(vec*v);
         dx_dt(19,:) = dCamitdt;
+        
+        % Assemble the fluxMatrix which has the fluexes of IP3 generation, Jch, Jserca, Jerleak, Jpmip3dep, Jpmleak,  Jpmca, Jncx, Jmitin, Jmitout 
+        fluxMatrix = [v(17,:)+v(18,:); v(23,:); v(24,:) ; v(25,:); v(26,:) ; v(27,:) ; v(28,:) ; v(29,:) ; v(30,:) ; v(31,:)];
 
     end
     options = odeset('RelTol',1e-4,'AbsTol',1e-4,'Refine',1000);
-    [T,X] = ode15s(@F,Tgrid,x0,options); 
-    [~,speciesArray] = F(T,X'); 
+    [T,X] = ode15s(@F,Tgrid,x0,options);
+    [~,speciesArray,fluxMatrix] = F(Tgrid,X'); 
 
 end
 
