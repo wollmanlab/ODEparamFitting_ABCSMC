@@ -88,11 +88,11 @@ suptitle('Tot. Receptor');
 [K,x0,L,t0,t,dt] = SubramaniamInput; 
 % first let the species go to steady states
 % This steady state output can be used for all the subsequent 
-[T0,X0,speciesArray] = SubramaniamModel(K,t0,x0,dt);
+[T0,X0,speciesArray,fluxMatrix0] = SubramaniamModel(K,t0,x0,dt);
 % Check for conservation of G protein alpha
 x1 = X0(end,:);
 x1(1) = L;
-[T1,X1,speciesArray1] = SubramaniamModel(K,t,x1,dt);
+[T1,X1,speciesArray1,fluxMatrix1] = SubramaniamModel(K,t,x1,dt);
 % use interpolation to get time series values in speciesArray that
 % correspond to the values in the output X vector
 GiDInterp0 = speciesArray(:,2);
@@ -185,26 +185,67 @@ title('G protein beta gamma vs time');
 xlabel('Time (seconds)');
 ylabel('Concentration(\muM)');
 % The third plot panel has plots on fluxes
-
+figure(6);
 % Plot on IP3 generation flux
-
+subplot(2,2,1);
+plot(T0,fluxMatrix0(1,:),'b',T1 + max(T0),fluxMatrix1(1,:),'r');
+title('IP3 Flux');
+xlabel('Time (seconds)');
+ylabel('Concentration(\muM)');
 % Plot on Jch, the ip3 channel calcium flux
-
+subplot(2,2,2);
+plot(T0,fluxMatrix0(2,:),'b',T1 + max(T0),fluxMatrix1(2,:),'r');
+title('Jch');
+xlabel('Time (seconds)');
+ylabel('Concentration(\muM)');
 % Plot on Jserca
-
+subplot(2,2,3);
+plot(T0,fluxMatrix0(3,:),'b',T1 + max(T0),fluxMatrix1(3,:),'r');
+title('Jserca');
+xlabel('Time (seconds)');
+ylabel('Concentration(\muM)');
 % Plot on Jer,leak
-
-% Plot on Jpm,leak
-
+subplot(2,2,4);
+plot(T0,fluxMatrix0(4,:),'b',T1 + max(T0),fluxMatrix1(4,:),'r');
+title('Jer-leak');
+xlabel('Time (seconds)');
+ylabel('Concentration(\muM)');
 % Plot on Jpm,ip3dep
-
+figure(7);
+subplot(2,2,1);
+plot(T0,fluxMatrix0(5,:),'b',T1 + max(T0),fluxMatrix1(5,:),'r');
+title('Jpm-ip3dep');
+xlabel('Time (seconds)');
+ylabel('Concentration(\muM)');
+% Plot on Jpm,leak
+subplot(2,2,2);
+plot(T0,fluxMatrix0(6,:),'b',T1 + max(T0),fluxMatrix1(6,:),'r');
+title('Jpm-leak');
+xlabel('Time (seconds)');
+ylabel('Concentration(\muM)');
 % Plot on Jpmca
-
+subplot(2,2,3);
+plot(T0,fluxMatrix0(7,:),'b',T1 + max(T0),fluxMatrix1(7,:),'r');
+title('Jpmca');
+xlabel('Time (seconds)');
+ylabel('Concentration(\muM)');
 % Plot on Jncx
-
+subplot(2,2,4);
+plot(T0,fluxMatrix0(8,:),'b',T1 + max(T0),fluxMatrix1(8,:),'r');
+title('Jncx');
+xlabel('Time (seconds)');
+ylabel('Concentration(\muM)');
 % Plot on Jmit,in 
-
+figure(8);
+subplot(1,2,1);
+plot(T0,fluxMatrix0(9,:),'b',T1 + max(T0),fluxMatrix1(9,:),'r');
+title('Jmit-in');
+xlabel('Time (seconds)');
+ylabel('Concentration(\muM)');
 % Plot on Jmit,out
-
-
+subplot(1,2,2);
+plot(T0,fluxMatrix0(10,:),'b',T1 + max(T0),fluxMatrix1(10,:),'r');
+title('Jmit-out');
+xlabel('Time (seconds)');
+ylabel('Concentration(\muM)');
 
