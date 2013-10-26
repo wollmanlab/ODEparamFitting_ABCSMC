@@ -373,8 +373,8 @@ function [T,X ,speciesArray] = SubramaniamModel( K,t,x0,dt)
 
     end
     options = odeset('RelTol',1e-4,'AbsTol',1e-4,'Refine',1000);
-    [T,X] = ode15s(@F,Tgrid,x0,options);
-    [~,speciesArray] = F(Tgrid,X'); 
+    [T,X] = ode15s(@F,Tgrid,x0,options); 
+    [~,speciesArray] = F(T,X'); 
 
 end
 
