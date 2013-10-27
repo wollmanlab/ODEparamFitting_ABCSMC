@@ -3,6 +3,9 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     K = zeros(79,1);
     % vector of initial conditions
     x0 = zeros(19,1);
+
+    
+    
     % ligand(L)
     x0(1) = 0;
     % receptor(R)
@@ -36,11 +39,14 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     % cytosolic calcium (Cai)
     x0(16) = .05;
     % ER calcium (Caer)
-    x0(17) = 420;
+    x0(17) = 226;
     % fraction of un-inhibited ip3 receptor (h)
     x0(18) = 0.8;
     % mitochondria calcium (Camit)
-    x0(19) = 0;
+    x0(19) = 0.1;
+    %x0(19) = x0(16)^4/((K2^4 + x0(16)^4)*(km + (kout*x0(16)^2)/(K3^2 + x0(16)^2))); Another type of implementation but we are not using it now 
+   
+    
     %Prtot_e
     K(1) = 1.91e2;
     %Km_e
@@ -201,13 +207,16 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     K(78) = x0(11) + x0(12);
     %Gbytot 
     K(79) = x0(4);
-    %x0(19) = x0(16)^4/((K2^4 + x0(16)^4)*(km + (kout*x0(16)^2)/(K3^2 + x0(16)^2)));
+    
+    
+    
+ 
     
     
     %L is the ligand amount
     L = 0.03;
     % t0 is the period before perturbation
-    t0 = 1000;
+    t0 = 10000;
     % t is the period after perturbation
     t =  2000;
     

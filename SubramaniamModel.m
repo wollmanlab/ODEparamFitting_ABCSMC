@@ -120,7 +120,7 @@ function [T,X ,speciesArray,fluxMatrix] = SubramaniamModel( K,t,x0,dt)
         GRK_Gby = Gby_tot - x(4,:) - GiD;
         Cai2CaMGRK = GRKtot -x(5,:) -GRK_Gby;
         Cai2CaM = CaMtot - x(15,:) - Cai2CaMGRK;
-        speciesArray = [IP3p,GiD,GRK_Gby, Cai2CaMGRK, Cai2CaM];
+        speciesArray = [IP3p,GiD,GRK_Gby, Cai2CaMGRK, Cai2CaM,Q];
         
         %initialize the vector for fluxes
         v = zeros(31,size(x,2));
