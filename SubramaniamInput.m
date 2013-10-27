@@ -36,11 +36,11 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     % cytosolic calcium (Cai)
     x0(16) = .05;
     % ER calcium (Caer)
-    x0(17) = 420;
+    x0(17) = 226;
     % fraction of un-inhibited ip3 receptor (h)
     x0(18) = 0.8;
     % mitochondria calcium (Camit)
-    x0(19) = 0;
+    x0(19) = 0.1;
     %Prtot_e
     K(1) = 1.91e2;
     %Km_e
