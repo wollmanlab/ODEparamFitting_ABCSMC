@@ -249,3 +249,13 @@ title('Jmit-out');
 xlabel('Time (seconds)');
 ylabel('Concentration(\muM)');
 
+%% Test the flux balance of ER
+figure(9);
+subplot();
+
+
+%% Test G protein balance by 
+figure(10);
+
+%% Test the balance between mitochondria fluxes and plasma membrane fluxes
+figure(11);

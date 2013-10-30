@@ -61,7 +61,7 @@ ylabel('Fraction');
 %% Fig #2 G protein complexes
 figure(2);
 clf;
-subplot(1,3,1);
+subplot(2,3,1);
 % total G protein related complexes before perturbation
 Gbytot0 = X0L(:,4) + speciesArray0(:,2) + speciesArray0(:,3);
 Gaitot0 = X0L(:,12) + X0L(:,11) + speciesArray0(:,2);
@@ -74,14 +74,14 @@ axis([0 max(TL)+max(T0L) 0 1]);
 xlabel('Time (seconds)');
 ylabel('Fraction');
 % plot the ratio of GaiT with Gaitot
-subplot(1,3,2);
+subplot(2,3,2);
 plot(T0L,X0L(:,11)./Gaitot0,'b',TL + max(T0L),XL(:,11)./Gaitot1,'r');
 title('[GaiT]/Gaitot');
 axis([0 max(TL)+max(T0L) 0 1]);
 xlabel('Time (seconds)');
 ylabel('Fraction');
 % plot the ratio of GRK.Gby with Gbytot
-subplot(1,3,3);
+subplot(2,3,3);
 plot(T0L,X0L(:,3)./Gbytot0,'b',TL + max(T0L),XL(:,3)./Gbytot1,'r');
 title('[GRK.Gby]/Gbytot');
 axis([0 max(TL)+max(T0L) 0 1]);
@@ -144,3 +144,9 @@ plot(T0L,X0L(:,19),'b',TL + max(T0L),XL(:,19),'r');
 title('Mit Ca');
 xlabel('Time (seconds)');
 ylabel('Concentration (micromolar)');
+%% Fig #6 plot the evolution of G protein complexes and their conservation 
+figure(6);
+clf;
+
+
+%
