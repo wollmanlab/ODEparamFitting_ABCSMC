@@ -1,6 +1,6 @@
 function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     % the vector of parameters
-    K = zeros(79,1);
+    K = zeros(78,1);
     % vector of initial conditions
     x0 = zeros(19,1);
     % ligand(L)
@@ -40,7 +40,7 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     % fraction of un-inhibited ip3 receptor (h)
     x0(18) = 0.8;
     % mitochondria calcium (Camit)
-    x0(19) = 0.1;
+    x0(19) = 6.49e-2;
     %Prtot_e
     K(1) = 1.91e2;
     %Km_e
@@ -190,17 +190,15 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     K(73) = K(72)/K(33);
     %Km_pm_ip3_dep 
     K(74) = 1;
-    %Vmax_pm_ip3_dep 
-    K(75) = 0.2;
     %vpm_leak 
-    K(76) = 0.03;
+    K(75) = 1.83e-2;
     % state variables that are calculated algebraically 
     %T 
-    K(77) = 468;
+    K(76) = 468;
     %Gaitot 
-    K(78) = x0(11) + x0(12);
+    K(77) = x0(11) + x0(12);
     %Gbytot 
-    K(79) = x0(4);
+    K(78) = x0(4);
     %x0(19) = x0(16)^4/((K2^4 + x0(16)^4)*(km + (kout*x0(16)^2)/(K3^2 + x0(16)^2)));
     
     

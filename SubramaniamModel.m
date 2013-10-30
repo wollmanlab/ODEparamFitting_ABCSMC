@@ -102,11 +102,10 @@ function [T,X ,speciesArray,fluxMatrix] = SubramaniamModel( K,t,x0,dt)
     kb21 = K(72);
     kf21 = K(73);
     Km_pm_ip3_dep = K(74);
-    Vmax_pm_ip3_dep = K(75);
-    vpm_leak = K(76);
-    Tk = K(77);
-    Gaitot = K(78);
-    Gby_tot = K(79);
+    vpm_leak = K(75);
+    Tk = K(76);
+    Gaitot = K(77);
+    Gby_tot = K(78);
     
     Tgrid = (0:dt:t)'; 
     function [dx_dt,speciesArray,fluxMatrix] = F(t,x) %#ok<INUSL>
