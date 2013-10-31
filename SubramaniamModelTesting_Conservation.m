@@ -36,14 +36,14 @@ figure(1);
 clf
 subplot(1,2,1)
 plot(T0L,X0L(:,1) + X0L(:,3) + X0L(:,6) + X0L(:,8),'b',TL+ max(T0L),XL(:,1) + XL(:,3) + XL(:,6) + XL(:,8),'r');
-axis([0 3000 -0.005 0.015])
+%axis([0 3000 -0.005 0.015])
 title('Simulation results')
 xlabel('Time (seconds)');
 ylabel('Concentration (\muM)');
 
 subplot(1,2,2)
 plot(T0L,zeros(size(T0L)),'b--',TL+ max(T0L),L*ones(size(TL)),'r--'); 
-axis([0 3000 -0.005 0.015])
+%axis([0 3000 -0.005 0.015])
 title('Expected')
 suptitle('Tot. Ligand');
 xlabel('Time (seconds)');
@@ -120,7 +120,7 @@ ylabel('Fraction changed)');
 
 % Check for conservation of GRK
 Cai2CaMGRKInterp0 = speciesArray(:,4);
-Cai2CaMGRKInterp  = speciesArray(:,4);
+Cai2CaMGRKInterp  = speciesArray1(:,4);
 subplot(2,4,5);
 plot(T0,(X0(:,5) + GRKGbyInterp0 + Cai2CaMGRKInterp0)./(X0(1,5) + GRKGbyInterp0(1) + Cai2CaMGRKInterp0(1)),'b', T1 + max(T0), (X1(:,5) + GRKGbyInterp + Cai2CaMGRKInterp)./(X0(1,5) + GRKGbyInterp0(1) + Cai2CaMGRKInterp0(1)), 'r');
 title('Tot. GRK');
@@ -128,7 +128,7 @@ xlabel('Time (seconds)');
 ylabel('Fraction changed');
 % Check for conservation of CaM
 Cai2CaMInterp0 = speciesArray(:,5); 
-Cai2CaMInterp = speciesArray(:,5);
+Cai2CaMInterp = speciesArray1(:,5);
 
 subplot(2,4,6);
 plot(T0, (X0(:,15) + Cai2CaMGRKInterp0 + Cai2CaMInterp0)./(X0(1,15) + Cai2CaMGRKInterp0(1) + Cai2CaMInterp0(1)),'b',T1 + max(T0), (X1(:,15) + Cai2CaMGRKInterp + Cai2CaMInterp)./(X0(1,15) + Cai2CaMGRKInterp0(1) + Cai2CaMInterp0(1)), 'r');
@@ -137,7 +137,7 @@ xlabel('Time (seconds)');
 ylabel('Fraction changed');
 % Check for conservation of PIP2
 ip3pInterp0 = speciesArray(:,1); 
-ip3pInterp = speciesArray(:,1);
+ip3pInterp = speciesArray1(:,1);
 
 subplot(2,4,7);
 plot(T0,(X0(:,13) + ip3pInterp0 + X0(:,14))./(X0(1,13) + ip3pInterp0(1) + X0(1,14)), 'b',T1 + max(T0),(X1(:,13) + ip3pInterp + X1(:,14))./(X0(1,13) + ip3pInterp0(1) + X0(1,14)), 'r');
