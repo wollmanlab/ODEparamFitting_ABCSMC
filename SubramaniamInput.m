@@ -1,6 +1,6 @@
 function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     % the vector of parameters
-    K = zeros(78,1);
+    K = zeros(77,1);
     % vector of initial conditions
     x0 = zeros(19,1);
     % ligand(L)
@@ -22,15 +22,12 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     % receptor phosphorylated internalized (Rpi)
     x0(9) = 0;
     % receptor pool (Rpool)
-    x0(10) = 0.001;
+    x0(10) = 0.0001;
     % G protein alpha internalized - GTP complex (GaiT)
     x0(11) = 0;
     % G protein alpha internalized - GDP complex (GaiD)
     x0(12) = 8.12e-3;
-    % PIP2  
-    x0(13) = 110;
-    % IP3
-    x0(14) = 0.1;
+    % x0(13) and x0(14) will be initialized later
     % CaM
     x0(15) = 3.98;
     % cytosolic calcium (Cai)
@@ -41,6 +38,8 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     x0(18) = 0.8;
     % mitochondria calcium (Camit)
     x0(19) = 6.49e-2;
+    % GiD. This is to used to calculate Gbytot
+    GiD = 0;
     %Prtot_e
     K(1) = 1.91e2;
     %Km_e
@@ -174,7 +173,7 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     %rho_m 
     K(66) = 0.01;
     %Gby_tot
-    K(67) = x0(4);
+    K(67) = x0(4) + GiD;
     %K3 = 5;
     K(68) = 5;
     %Beta_m 
@@ -196,12 +195,13 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     %T 
     K(76) = 468;
     %Gaitot 
-    K(77) = x0(11) + x0(12);
-    %Gbytot 
-    K(78) = x0(4);
+    K(77) = x0(11) + x0(12) + GiD;
     %x0(19) = x0(16)^4/((K2^4 + x0(16)^4)*(km + (kout*x0(16)^2)/(K3^2 + x0(16)^2)));
     
-    
+    % PIP2  
+    x0(13) = K(28) -2;
+    % IP3
+    x0(14) = 0.1;
     %L is the ligand amount
     L = 0.03;
     % t0 is the period before perturbation
