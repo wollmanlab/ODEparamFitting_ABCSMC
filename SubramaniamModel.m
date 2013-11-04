@@ -4,25 +4,25 @@ This function simulates the Subramaniam et al Ca2+ model
 Inputs:
     K = the vector of parameters
     x0 = vector of initial conditions
-    x0(1) = ligand = varied form 1nM to 500 nM
-    x0(2) = Receptor (R) = 4.11e-2
-    x0(3) = ligand-receptor complex (L.R) =0
-    x0(4) = G protein beta gamma = 8.28e-3
-    x0(5) = G protein coupled receptor kinase (GRK) = 2.59e-3
-    x0(6) = ligand-receptor-phosphorylated (L.Rp) = 0
-    x0(7) = receptor-phosphorylated(Rp) = 0
-    x0(8) = ligand-receptor-internalized (L.Ri) =0 
-    x0(9) = receptor-phosphorylated-internalized( Rpi) = 0
-    x0(10)= receptor pool(Rpool) = 0.001
-    x0(11) = G protein alpha internalized -GTP complex(GaiT) = 0
-    x0(12) = G protein alpha internalized -GDP complex(GaiD) = 8.12e-3
-    x0(13) = PIP2 = 110
-    x0(14) = IP3 = 0.1
-    x0(15) = CaM = 3.98 
-    x0(16) = cytosolic calcium (Cai) = <2
-    x0(17) = ER calcium (Caer) = < 2000
-    x0(18) = fraction of un-inhibited ip3 receptor(h) = 0.8
-    x0(19) = mitochondria calcium (Camit) = 0
+    x0(1) = ligand 
+    x0(2) = Receptor (R)
+    x0(3) = ligand-receptor complex (L.R)
+    x0(4) = G protein beta gamma
+    x0(5) = G protein coupled receptor kinase (GRK) 
+    x0(6) = ligand-receptor-phosphorylated (L.Rp)
+    x0(7) = receptor-phosphorylated(Rp)
+    x0(8) = ligand-receptor-internalized (L.Ri) 
+    x0(9) = receptor-phosphorylated-internalized( Rpi) 
+    x0(10)= receptor pool(Rpool)
+    x0(11) = G protein alpha internalized -GTP complex(GaiT) 
+    x0(12) = G protein alpha internalized -GDP complex(GaiD) 
+    x0(13) = PIP2
+    x0(14) = IP3 
+    x0(15) = CaM  
+    x0(16) = cytosolic calcium (Cai)
+    x0(17) = ER calcium (Caer)
+    x0(18) = fraction of un-inhibited ip3 receptor(h) 
+    x0(19) = mitochondria calcium (Camit) 
 
 Outputs:
 
@@ -104,9 +104,7 @@ function [T,X ,speciesArray,fluxMatrix] = SubramaniamModel( K,t,x0,dt)
     Km_pm_ip3_dep = K(74);
     vpm_leak = K(75);
     Tk = K(76);
-    Gaitot = K(77);
-    Gby_tot = K(78);
-    
+    Gaitot = K(77);    
     Tgrid = (0:dt:t)'; 
     function [dx_dt,speciesArray,fluxMatrix] = F(t,x) %#ok<INUSL>
         % Calculate the related parameters
