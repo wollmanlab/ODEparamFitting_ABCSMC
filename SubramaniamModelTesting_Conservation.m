@@ -259,3 +259,22 @@ figure(10);
 
 %% Test the balance between mitochondria fluxes and plasma membrane fluxes
 figure(11);
+%% Test GiD IC variation
+figure(12);
+%% Test #1 - Ligand conservation
+% create inputs
+clear all;
+[K,x0,L,t0,t,dt] = SubramaniamInput; 
+% Change IC of GiD
+K(67) = K(67) + 0;
+K(77) = K(77) + 0;
+KL = K;
+% first get the zero ligand input condition
+[T0L,X0L,speciesArray0] = SubramaniamModel(KL,t0,x0,dt);
+xL = X0L(end,:);
+xL(1) = L;
+[TL,XL,speciesArray1] = SubramaniamModel(KL,t,xL,dt);
+figure(13);
+plot(T0L,speciesArray0(:,2),'b',TL + max(T0L),speciesArray1(:,2),'r');
+
+
