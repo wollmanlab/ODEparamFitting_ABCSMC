@@ -1,7 +1,7 @@
 %% This function generates the input parameters and ICs for the Bennett model
 % Units of concentration are in micromolar, whereas units of time are in
 % seconds, lengths are in micron
-function [K,t0,t,dt,x0] = BennetModelInput()
+function [K,t0,t,dt,x0] = BennettModelInput()
     % initialize the parameter for 
     K = zeros(35,1);
 

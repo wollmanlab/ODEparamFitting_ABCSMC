@@ -97,7 +97,7 @@ x0(7) = K(40);
         % rh is the rate coefficient for the hydrolysis of PIP2
         rh = alpha*(x(6,:)./(Kc + x(6,:))).*x(3,:);
         % Beta is the buffering function
-        Beta = (1 + Ke*Be/(Ke + x(6,:)).^2 + Kx*Bx./(Kx + x(6,:)).^2).^-1;
+        Beta = 1/(1 + Ke*Be/(Ke + x(6,:)).^2 + Kx*Bx./(Kx + x(6,:)).^2);
         % zeta
         zeta = d2.*(x(5,:) + d1)./(x(5,:) + d3);
         % tauh is the time constant for IP3 receptor inactivation 
@@ -107,7 +107,7 @@ x0(7) = K(40);
         %minf is used in the cytosolic calcium equation
         minf = (x(5,:)./(d1 + x(5,:))).*(x(6,:)./(d5 + x(6,:)));
         % gamma is used in the equation to calculate Caer
-        gamma = (1 + Be./(Ke + x(6,:)) + Bx./(Kx + x(6,:))).^-1;
+        gamma = 1./(1 + Be./(Ke + x(6,:)) + Bx./(Kx + x(6,:)));
         % Caer is the er calcium
         Caer = Ker.*(Cat - x(6,:)./gamma)./(Ber*epr);        
         % rate of change of unphosphorylated surface receptors
