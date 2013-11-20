@@ -13,7 +13,9 @@
 
 %% Figure #1 Receptor time course data
 % create inputs
-[K,x0,L,t0,t,dt] = SubramaniamInput; 
+ver  = 0;
+[K,x0,L,t0,t,dt] = SubramaniamInput(ver);
+
 % first get the zero ligand input condition
 [T0L,X0L,speciesArray0,fluxMatrix0] = SubramaniamModel(K,t0,x0,dt);
 xL = X0L(end,:);
@@ -33,7 +35,7 @@ title('R/Rtot');
 axis([0 max(TL)+max(T0L) 0 1]);
 xlabel('Time (seconds)');
 ylabel('Fraction');
-
+xlim([950 1150]);
 %plot the L.R/Rtot fraction
 subplot(2,2,2);
 plot(T0L,X0L(:,3)./Rtot0,'b', TL + max(T0L),XL(:,3)./RtotL,'r');
@@ -41,7 +43,7 @@ title('[L.R]/Rtot');
 axis([0 max(TL)+max(T0L) 0 1]);
 xlabel('Time (seconds)');
 ylabel('Fraction');
-
+xlim([950 1150]);
 % plot the [L.Ri]/Rtot fraction
 subplot(2,2,3);
 plot(T0L,X0L(:,8)./Rtot0,'b', TL + max(T0L),XL(:,8)./RtotL,'r');
@@ -49,7 +51,7 @@ title('[L.Ri]/Rtot');
 axis([0 max(TL)+max(T0L) 0 1]);
 xlabel('Time (seconds)');
 ylabel('Fraction');
-
+xlim([950 1150]);
 % plot the [Rpi]/Rtot fraction 
 subplot(2,2,4);
 plot(T0L,X0L(:,9)./Rtot0,'b', TL + max(T0L),XL(:,9)./RtotL,'r');
@@ -57,7 +59,7 @@ title('[Rpi]/Rtot');
 axis([0 max(TL)+max(T0L) 0 1]);
 xlabel('Time (seconds)');
 ylabel('Fraction');
-
+xlim([950 1150]);
 %% Fig #2 G protein complexes
 figure(2);
 clf;
@@ -73,6 +75,7 @@ title('[Gby]/Gbytot');
 axis([0 max(TL)+max(T0L) 0 1]);
 xlabel('Time (seconds)');
 ylabel('Fraction');
+xlim([950 1150]);
 % plot the ratio of GaiT with Gaitot
 subplot(2,3,2);
 plot(T0L,X0L(:,11)./Gaitot0,'b',TL + max(T0L),XL(:,11)./Gaitot1,'r');
@@ -80,6 +83,7 @@ title('[GaiT]/Gaitot');
 axis([0 max(TL)+max(T0L) 0 1]);
 xlabel('Time (seconds)');
 ylabel('Fraction');
+xlim([950 1150]);
 % plot the ratio of GRK.Gby with Gbytot
 subplot(2,3,3);
 plot(T0L,X0L(:,3)./Gbytot0,'b',TL + max(T0L),XL(:,3)./Gbytot1,'r');
@@ -87,7 +91,7 @@ title('[GRK.Gby]/Gbytot');
 axis([0 max(TL)+max(T0L) 0 1]);
 xlabel('Time (seconds)');
 ylabel('Fraction');
-
+xlim([950 1150]);
 %% Fig #3 Q and h
 figure(3);
 clf;
@@ -101,6 +105,7 @@ subplot(1,2,2);
 plot(T0L,X0L(:,18),'b',TL + max(T0L),XL(:,18),'r');
 title('h');
 xlabel('Time (seconds)');
+xlim([950 1150]);
 %% Fig #4 IP3 and PIP2
 figure(4);
 clf;
@@ -109,6 +114,7 @@ subplot(1,2,1);
 plot(T0L,X0L(:,14),'b',TL+ max(T0L),XL(:,14),'r');
 title('IP3');
 xlabel('Time (seconds)');
+xlim([950 1150]);
 % plot PIP2/PIP2tot fraction
 subplot(1,2,2);
 %PIP2tot0 is the PIP2tot before perturbation  
@@ -120,7 +126,7 @@ title('PIP2/PIP2tot');
 xlabel('Time (seconds)');
 ylabel('Fraction');
 axis([0 max(TL)+max(T0L) 0 1]);
-
+xlim([950 1150]);
 %% Fig #5 cytosolic Ca, Caer and Camit
 figure(5);
 clf;
@@ -130,23 +136,22 @@ plot(T0L,X0L(:,16),'b',TL+ max(T0L),XL(:,16),'r');
 title('cytosolic Ca');
 xlabel('Time (seconds)');
 ylabel('Concentration (micromolar)');
-
+xlim([950 1150]);
 % plot Caer
 subplot(1,3,2);
 plot(T0L,X0L(:,17),'b',TL + max(T0L),XL(:,17),'r');
 title('ER Ca');
 xlabel('Time (seconds)');
 ylabel('Concentration (micromolar)');
-
+xlim([950 1150]);
 %plot Ca mit
 subplot(1,3,3);
 plot(T0L,X0L(:,19),'b',TL + max(T0L),XL(:,19),'r');
 title('Mit Ca');
 xlabel('Time (seconds)');
 ylabel('Concentration (micromolar)');
+xlim([950 1150]);
 %% Fig #6 plot the evolution of G protein complexes and their conservation 
 figure(6);
 clf;
 
-
-%

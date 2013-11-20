@@ -1,4 +1,4 @@
-function [K,x0,L,t0,t,dt] = SubramaniamInput( )
+function [K,x0,L,t0,t,dt] = SubramaniamInput(ver)
     % the vector of parameters
     K = zeros(77,1);
     % vector of initial conditions
@@ -6,6 +6,7 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     % ligand(L)
     x0(1) = 0;
     % receptor(R)
+
     x0(2) = 4.11e-2;
     % ligand-receptor complex(L.R)
     x0(3) = 0;
@@ -39,7 +40,7 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     % mitochondria calcium (Camit)
     x0(19) = 6.49e-2;
     % GiD. This is to used to calculate Gbytot
-    GiD = 0;
+    GiD = 0.1;
     %Prtot_e
     K(1) = 1.91e2;
     %Km_e
@@ -108,10 +109,21 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     K(33) = 8.36e-1;
     %Vmax_pm_ip3_dep
     K(34) = 2.26e-1;
-    %kf1 
-    K(35) = 5.89e1;
+    %kf1
+    switch ver
+        case 0 
+            K(35) = 5.89e1;
+        case 1
+            K(35) = 1;
+    end
+    
     %kb1
-    K(36) = 2.02e-1;
+    switch ver
+        case 0
+            K(36) = 2.02e-1;
+        case 1
+            K(36) = 5;
+    end
     %kb2
     K(37) = 2.52e1;
     %kf3 
@@ -203,7 +215,13 @@ function [K,x0,L,t0,t,dt] = SubramaniamInput( )
     % IP3
     x0(14) = 0.1;
     %L is the ligand amount
-    L = 0.03;
+    switch ver
+        case 0
+            L = 0.03;
+        case 1
+            L = 10;
+    end
+    
     % t0 is the period before perturbation
     t0 = 1000;
     % t is the period after perturbation
