@@ -1,7 +1,7 @@
 %% This function generates the input parameters and ICs for the Bennett model
 % Units of concentration are in micromolar, whereas units of time are in
 % seconds, lengths are in micron
-function [K,t0,t,dt,x0] = BennettModelInput()
+function [K,t0,t,dt,x0] = BennettModelInput(ver)
     % initialize the parameter for 
     K = zeros(35,1);
 
@@ -28,7 +28,13 @@ function [K,t0,t,dt,x0] = BennettModelInput()
     % kd, G protein deactivation rate
     K(11) = 0.15;
     % PIP2t, the total number of PIP2 molecules
-    K(12) = 5e4;
+    switch ver
+        case 0
+           K(12) = 5e4; 
+        case 1
+           K(12) = 10e7;
+    end
+    
     %rr, PIP2 replenishment rate
     K(13) = 10;
     % delta, G protein intrinsic activity parameter
@@ -38,7 +44,13 @@ function [K,t0,t,dt,x0] = BennettModelInput()
     %alpha, effective signal gain parameter
     K(16) = 2.781e-5;
     % v, cell volume. The paper lists this constant in unit of meter. Here it is listed in unit of liter 
-    K(17) = 5e-13;
+    switch ver
+        case 0
+            K(17) = 5e-13;
+        case 1
+            K(17) = 1e-12;
+    end
+    
     % Na, avogadro num
     K(18) = 6.02252e17;
     % epr, ratio of ER to cytosolic volume
