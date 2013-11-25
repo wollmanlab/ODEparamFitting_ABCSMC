@@ -35,12 +35,12 @@ dx = mean(diff(grd));
 
 r=sqrt(x.^2+y.^2+z.^2);              
 
-%% 3D gaussian (solution for diffusion from Berg) 
-funcC = @(r,t) N/(4*pi*D.*t).^(3/2)*exp(-r.^2/4/D./t); 
+%% Diffusion in a cylinder  
+funcC = @(r,t) N/(4*pi*D.*t.*h)*exp(-r.^2/4/D./t); 
 
-% equation for the 3D case for distance that a "Front" of Cmin
+
+% equation for distance that a "Front" of Cmin
 % concentration diffused in. 
-f_r3 = @(t) 2*(D*t.*log(N./(Cmin*(4*D*pi*t).^(3/2)))).^(1/2); 
 f_r2 = @(t) sqrt(4*D*t.*log(N./4/D./t/pi/Cmin/h)); % 100 um height, as if we divide N to 100 equal 1um height layers and diffuse... 
 
 
