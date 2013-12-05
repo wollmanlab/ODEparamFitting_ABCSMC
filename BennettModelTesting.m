@@ -224,7 +224,36 @@ ylabel('Number');
 legend('PIP2','IP3','PIP2tot');
 figure(7);
 
-%% plot the time series of calcium species and their conservation
+%% plot the time series of responses and their variation with ligand cnocentration
+lArray = [0; 1; 10; 1e2; 1e3 ];
+ver = 1;
+[K,t0,t,dt,x0] = BennettModelInput(ver);
+tCell = cell(length(lArray),1);
+xCell = cell( length(lArray),1);
+for i = 1:length(lArray)
+    L = 0;
+    t0 = 3000;
+    t = 240;
+    % Run the simulation to equilibrium
+    [T0,X0] = BennettModel(K,t0,dt,L,x0);
+    x01 = X0(end,:)';
+    % Run simulation
+    L = lArray(i);
+    [T,X] = BennettModel(K,t,dt,L,x01);
+    tCell{i} = T; 
+    xCell{i} = X;
+end
+clr = jet(5);
+figure(10);
+hold on;
+title('Calcium Response Variation');
+xlabel('Time (seconds)');
+ylabel('micromlar');
+for i = 1:length(lArray)
+  currXCell = xCell{i};
+  plot(tCell{i},currXCell(:,6),'color',clr(i,:));  
+end
+legend('0', '1', '10', '1e2', '1e3');
 
 
 
