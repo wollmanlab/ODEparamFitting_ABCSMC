@@ -14,7 +14,16 @@ function [K,t0,t,dt,x0] = BennettModelInput(ver)
     % kr, receptor recycling rate
     K(4) = 1.75e-4;
     %kp, receptor phosphorylation rate
-    K(5) = 0.03;
+    switch ver
+        case 0 
+            K(5) = 0.03;
+        case 1
+            K(5) = 0.03; 
+        case 2
+            K(5) = 0.012;
+        case 3
+            K(5) = 0.03;
+    end
     % ke, receptor endocytosis rate
     K(6) = 6e-3;
     % xi, the fraction of mobile receptors 
@@ -33,10 +42,19 @@ function [K,t0,t,dt,x0] = BennettModelInput(ver)
            K(12) = 5e4; 
         case 1
            K(12) = 10e7;
+        case 2
+           K(12) = 10e7;
+        case 3
+           K(12) = 10e7;   
     end
     
     %rr, PIP2 replenishment rate
-    K(13) = 10;
+    switch ver
+        case {0,1,2}
+            K(13) = 10;
+        case 3
+            K(13)=10; 
+    end
     % delta, G protein intrinsic activity parameter
     K(14) = 1.234e-3;
     % Kc, the dissociation constant for calcium binding to PLC
@@ -48,6 +66,10 @@ function [K,t0,t,dt,x0] = BennettModelInput(ver)
         case 0
             K(17) = 5e-13;
         case 1
+            K(17) = 1e-12;
+        case 2 
+            K(17) = 1e-12;
+        case 3 
             K(17) = 1e-12;
     end
     
@@ -116,18 +138,20 @@ function [K,t0,t,dt,x0] = BennettModelInput(ver)
     x0(6) =Cabas;
     % initial concentration of h
     x0(7) = hbas;
-
-
-
-
-
-
     % t0 is the time the system runs before perturbation
-    t0 = 0;
+    switch ver
+        case 3
+            t0 = 10000;
+        otherwise
+            t0 = 0;
+    end
     %
-    t = 240;
+    switch ver
+        case 3
+            t = 5000;
+        otherwise
+            t = 240;
+    end
     %
     dt = 1;
-
-
 end
