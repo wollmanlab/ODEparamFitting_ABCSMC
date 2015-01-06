@@ -1,4 +1,4 @@
-function [ T,X ] = BennettModel(K,t,dt,L,x0)
+function [ T,X,status ] = BennettModel(K,t,dt,L,x0)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
     % Rt, total no. of P2Y2 receptors
@@ -98,7 +98,7 @@ x0(7) = K(40);
         % rh is the rate coefficient for the hydrolysis of PIP2
         rh = alpha*(x(6,:)./(Kc + x(6,:))).*x(3,:);
         % Beta is the buffering function
-        Beta = 1/(1 + Ke*Be/(Ke + x(6,:)).^2 + Kx*Bx./(Kx + x(6,:)).^2);
+        Beta = 1./(1 + Ke*Be./(Ke + x(6,:)).^2 + Kx*Bx./(Kx + x(6,:)).^2);
         % zeta
         zeta = d2.*(x(5,:) + d1)./(x(5,:) + d3);
         % tauh is the time constant for IP3 receptor inactivation 
@@ -120,16 +120,28 @@ x0(7) = K(40);
         % rate of change of PIP2 
         dx_dt(4,:) = -(rh + rr).*x(4,:) - rr*Na*v*x(5,:) + rr*PIP2t;
         % rate of change of IP3 
-        dx_dt(5,:) = rh*x(4,:)./(Na*v) -kdeg*x(5,:);
+        dx_dt(5,:) = rh.*x(4,:)./(Na*v) -kdeg*x(5,:);
         % rate of change of cytosolic calcium
-        dx_dt(6,:) = Beta*(epr*(eta1.*minf.^3.*x(7,:).^3 + eta2).*(Caer - x(6,:)) - eta3.*(x(6,:).^2./(k3^2 + x(6,:).^2)));
+        dx_dt(6,:) = Beta.*(epr.*(eta1.*minf.^3.*x(7,:).^3 + eta2).*(Caer - x(6,:)) - eta3.*(x(6,:).^2./(k3^2 + x(6,:).^2)));
         % rate of change of h
         dx_dt(7,:) = (hinf -x(7,:))./tauh;
         
-    
+%         if (now-StartTime)*60*24*60>10; 
     end
-    options = odeset('RelTol',1e-4,'AbsTol',1e-4,'Refine',1000);
-    [T,X] = ode15s(@F,Tgrid,x0,options);
-
+    options = odeset('RelTol',1e-4,'AbsTol',1e-4,'outputfcn',@timelimit,'refine',100,'vectorized','on');
+%     StartTime=now; 
+    sol = ode15s(@F,[0 t],x0,options);
+    if max(sol.x)>=max(t)
+        T=Tgrid; 
+        
+        X=interp1(sol.x(:),sol.y',Tgrid); 
+%         [T,X] = deval(sol,Tgrid);
+%         X=X';
+        status=1; 
+    else
+        T=nan; 
+        X=nan(7,1); 
+        status=0; 
+    end
 end
 
