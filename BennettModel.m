@@ -72,6 +72,7 @@ function [ T,X ] = BennettModel(K,t,dt,L,x0)
     % Cat, total concentration of calcium
     Cat = K(35);
     Tgrid = (0:dt:t)';
+    
     function [dx_dt] = F(t,x)
         dx_dt = zeros(7,size(x,2));
         %{
@@ -91,7 +92,7 @@ x0(6) = K(39);
 x0(7) = K(40); 
   %}    
         
-        % rho_r is the ratio of teh number of ligand bound receptors to the
+        % rho_r is the ratio of teh number ofka*(delta + rho_r).*(Gt - x(3,:)) - kd*x(3,:); ligand bound receptors to the
         % total number of receptors
         rho_r = L*x(1,:)./(xi*Rt*(K1 + L));
         % rh is the rate coefficient for the hydrolysis of PIP2
